@@ -1,3 +1,4 @@
+// Function to encrypt the file
 function encryptFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
@@ -20,15 +21,9 @@ function encryptFile() {
         // Encrypt the base64-encoded data
         const encrypted = CryptoJS.AES.encrypt(base64Data, encryptionKey).toString();
 
-        // Create the encrypted file Blob
+        // Create and trigger download for encrypted file
         const encryptedBlob = new Blob([encrypted], { type: 'text/plain' });
-        const encryptedFileUrl = URL.createObjectURL(encryptedBlob);
-
-        // Set the download link for the encrypted file
-        const downloadLink = document.getElementById("downloadLink");
-        downloadLink.href = encryptedFileUrl;
-        downloadLink.download = "encrypted.txt";
-        downloadLink.style.display = "block";
+        downloadFile(encryptedBlob, 'encrypted.txt');
 
         // Show the decryption key to the user in Base64 format
         document.getElementById("decryptionKey").textContent = encryptionKey.toString(CryptoJS.enc.Base64);
@@ -39,6 +34,7 @@ function encryptFile() {
     reader.readAsArrayBuffer(file);
 }
 
+// Function to decrypt the file
 function decryptFile() {
     const encryptedFileInput = document.getElementById("encryptedFileInput");
     const decryptKeyInput = document.getElementById("decryptKeyInput");
@@ -62,15 +58,9 @@ function decryptFile() {
             // Decode the Base64 back to original file content
             const originalFileData = Uint8Array.from(atob(decrypted), c => c.charCodeAt(0));
 
-            // Create the decrypted file Blob
+            // Create and trigger download for decrypted file
             const decryptedBlob = new Blob([originalFileData], { type: 'application/octet-stream' });
-            const decryptedFileUrl = URL.createObjectURL(decryptedBlob);
-
-            // Set the download link for the decrypted file
-            const decryptedDownloadLink = document.getElementById("decryptedDownloadLink");
-            decryptedDownloadLink.href = decryptedFileUrl;
-            decryptedDownloadLink.download = "decrypted.txt";
-            decryptedDownloadLink.style.display = "block";
+            downloadFile(decryptedBlob, 'decrypted.txt');
 
             // Show the decryption result section
             document.getElementById("decryptionResult").style.display = "block";
@@ -79,4 +69,14 @@ function decryptFile() {
         }
     };
     reader.readAsText(file);
+}
+
+// Function to trigger file download
+function downloadFile(blob, filename) {
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
