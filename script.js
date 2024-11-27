@@ -1,4 +1,3 @@
-// Function to encrypt the file
 function encryptFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
@@ -21,9 +20,13 @@ function encryptFile() {
         // Encrypt the base64-encoded data
         const encrypted = CryptoJS.AES.encrypt(base64Data, encryptionKey).toString();
 
-        // Create and trigger download for encrypted file
+        // Create the encrypted file Blob
         const encryptedBlob = new Blob([encrypted], { type: 'text/plain' });
-        downloadFile(encryptedBlob, 'encrypted.txt');
+
+        // Show download button and attach file
+        const downloadButton = document.getElementById("downloadEncryptedButton");
+        downloadButton.style.display = "inline";
+        downloadButton.onclick = () => downloadFile(encryptedBlob, 'encrypted.txt');
 
         // Show the decryption key to the user in Base64 format
         document.getElementById("decryptionKey").textContent = encryptionKey.toString(CryptoJS.enc.Base64);
@@ -34,7 +37,6 @@ function encryptFile() {
     reader.readAsArrayBuffer(file);
 }
 
-// Function to decrypt the file
 function decryptFile() {
     const encryptedFileInput = document.getElementById("encryptedFileInput");
     const decryptKeyInput = document.getElementById("decryptKeyInput");
@@ -58,9 +60,13 @@ function decryptFile() {
             // Decode the Base64 back to original file content
             const originalFileData = Uint8Array.from(atob(decrypted), c => c.charCodeAt(0));
 
-            // Create and trigger download for decrypted file
+            // Create the decrypted file Blob
             const decryptedBlob = new Blob([originalFileData], { type: 'application/octet-stream' });
-            downloadFile(decryptedBlob, 'decrypted.txt');
+
+            // Show download button and attach file
+            const downloadButton = document.getElementById("downloadDecryptedButton");
+            downloadButton.style.display = "inline";
+            downloadButton.onclick = () => downloadFile(decryptedBlob, 'decrypted.txt');
 
             // Show the decryption result section
             document.getElementById("decryptionResult").style.display = "block";
