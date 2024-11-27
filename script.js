@@ -1,18 +1,18 @@
 function encryptFile() {
     const fileInput = document.getElementById("fileInput");
     const file = fileInput.files[0];
-    
+
     if (!file) {
         alert("Please select a file to encrypt.");
         return;
     }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         const fileData = event.target.result;
 
-        // Convert file data to Base64 string for encryption
-        const base64Data = btoa(fileData);
+        // Convert file data to Base64 string
+        const base64Data = btoa(String.fromCharCode(...new Uint8Array(fileData)));
 
         // Generate a random encryption key (16 bytes)
         const encryptionKey = CryptoJS.lib.WordArray.random(16);
@@ -27,6 +27,7 @@ function encryptFile() {
         // Set the download link for the encrypted file
         const downloadLink = document.getElementById("downloadLink");
         downloadLink.href = encryptedFileUrl;
+        downloadLink.download = "encrypted.txt";
         downloadLink.style.display = "block";
 
         // Show the decryption key to the user in Base64 format
@@ -35,7 +36,7 @@ function encryptFile() {
         // Show the encryption result section
         document.getElementById("encryptionResult").style.display = "block";
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
 }
 
 function decryptFile() {
@@ -45,13 +46,13 @@ function decryptFile() {
     const file = encryptedFileInput.files[0];
     const decryptionKey = CryptoJS.enc.Base64.parse(decryptKeyInput.value.trim());
 
-    if (!file || !decryptionKey) {
+    if (!file || !decryptKeyInput.value.trim()) {
         alert("Please provide both the encrypted file and decryption key.");
         return;
     }
 
     const reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
         const encryptedData = event.target.result;
 
         try {
@@ -59,7 +60,7 @@ function decryptFile() {
             const decrypted = CryptoJS.AES.decrypt(encryptedData, decryptionKey).toString(CryptoJS.enc.Utf8);
 
             // Decode the Base64 back to original file content
-            const originalFileData = atob(decrypted);
+            const originalFileData = Uint8Array.from(atob(decrypted), c => c.charCodeAt(0));
 
             // Create the decrypted file Blob
             const decryptedBlob = new Blob([originalFileData], { type: 'application/octet-stream' });
@@ -68,6 +69,7 @@ function decryptFile() {
             // Set the download link for the decrypted file
             const decryptedDownloadLink = document.getElementById("decryptedDownloadLink");
             decryptedDownloadLink.href = decryptedFileUrl;
+            decryptedDownloadLink.download = "decrypted.txt";
             decryptedDownloadLink.style.display = "block";
 
             // Show the decryption result section
