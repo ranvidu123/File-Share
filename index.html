@@ -1,38 +1,36 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Encryptor</title>
+    <title>File Encryption & Decryption</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
 </head>
 <body>
     <div class="container">
-        <h1>File Encryptor - Created By Ranvidu !</h1>
-        
-        <h2>Upload and Encrypt File</h2>
-        <input type="file" id="fileInput" />
-        <button onclick="encryptFile()">Encrypt File</button>
+        <h1>File Encryption & Decryption</h1>
 
-        <div id="encryptionResult" style="display:none;">
-            <h3>Encrypted File Download</h3>
-            <a id="downloadLink" href="" download>Download Encrypted File</a>
-            <p>Decryption Key: <span id="decryptionKey"></span></p>
+        <!-- Encryption Section -->
+        <h2>Encrypt File</h2>
+        <input type="file" id="fileInput">
+        <button onclick="encryptFile()">Encrypt File</button>
+        <div id="encryptionResult" style="display: none;">
+            <p>Encryption Key (Keep it safe):</p>
+            <p id="decryptionKey"></p>
+            <button id="downloadEncryptedButton" style="display:none;">Download Encrypted File</button>
         </div>
 
-        <h2>Upload Encrypted File and Decrypt</h2>
-        <input type="file" id="encryptedFileInput" />
-        <input type="text" id="decryptKeyInput" placeholder="Enter Decryption Key" />
+        <!-- Decryption Section -->
+        <h2>Decrypt File</h2>
+        <input type="file" id="encryptedFileInput">
+        <input type="text" id="decryptKeyInput" placeholder="Enter Decryption Key">
         <button onclick="decryptFile()">Decrypt File</button>
-
-        <div id="decryptionResult" style="display:none;">
-            <h3>Decrypted File Download</h3>
-            <a id="decryptedDownloadLink" href="" download>Download Decrypted File</a>
+        <div id="decryptionResult" style="display: none;">
+            <button id="downloadDecryptedButton" style="display:none;">Download Decrypted File</button>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1-crypto-js.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
