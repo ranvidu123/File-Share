@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Encryptor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>File Encryptor - Created By Ranvidu !</h1>
+        
+        <h2>Upload and Encrypt File</h2>
+        <input type="file" id="fileInput" />
+        <button onclick="encryptFile()">Encrypt File</button>
+
+        <div id="encryptionResult" style="display:none;">
+            <h3>Encrypted File Download</h3>
+            <a id="downloadLink" href="" download>Download Encrypted File</a>
+            <p>Decryption Key: <span id="decryptionKey"></span></p>
+        </div>
+
+        <h2>Upload Encrypted File and Decrypt</h2>
+        <input type="file" id="encryptedFileInput" />
+        <input type="text" id="decryptKeyInput" placeholder="Enter Decryption Key" />
+        <button onclick="decryptFile()">Decrypt File</button>
+
+        <div id="decryptionResult" style="display:none;">
+            <h3>Decrypted File Download</h3>
+            <a id="decryptedDownloadLink" href="" download>Download Decrypted File</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1-crypto-js.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
